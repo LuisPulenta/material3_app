@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:material3_app/config/themes/themes.dart';
+import 'package:material3_app/presentation/screens/screens.dart';
 
 void main() => runApp(const MyApp());
 
@@ -10,15 +12,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Material3 App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Material3 App'),
-          centerTitle: true,
-        ),
-        body: const Center(
-          child: Text('Hello Material3'),
-        ),
-      ),
+      theme: AppTheme(selectedColor: 2).theme(),
+      home: const ThemeConfigScreen(),
     );
   }
 }
