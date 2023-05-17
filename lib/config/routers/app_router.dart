@@ -10,7 +10,7 @@ final appRouter = GoRouter(
       builder: (context, state) => const HomeScreen(),
     ),
     GoRoute(
-      path: '/buttons',
+      path: '/theme',
       builder: (context, state) => const ThemeConfigScreen(),
     ),
   ],

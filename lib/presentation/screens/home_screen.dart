@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material3_app/presentation/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -14,10 +15,12 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Center(
         child: CustomButton(
-          color: colors.primary,
+          color: colors.inversePrimary,
           text: 'Configuración',
           icon: Icons.settings,
-          onPressed: () {},
+          onPressed: () {
+            context.push('/theme');
+          },
         ),
       ),
     );
