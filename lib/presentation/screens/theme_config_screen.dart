@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material3_app/config/themes/app_theme.dart';
 
 class ThemeConfigScreen extends StatelessWidget {
   const ThemeConfigScreen({Key? key}) : super(key: key);
@@ -116,7 +115,7 @@ class _CustomContainer extends StatelessWidget {
                 color: color,
                 spreadRadius: 2,
                 blurRadius: 1,
-                offset: Offset(1, 0), // changes position of shadow
+                offset: const Offset(1, 0), // changes position of shadow
               ),
             ],
           ),

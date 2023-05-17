@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:material3_app/config/routers/app_router.dart';
 import 'package:material3_app/config/themes/themes.dart';
-import 'package:material3_app/presentation/screens/screens.dart';
 
 void main() => runApp(const MyApp());
 
@@ -9,11 +9,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
       title: 'Material3 App',
       theme: AppTheme(selectedColor: 2).theme(),
-      home: const ThemeConfigScreen(),
     );
   }
 }
