@@ -13,15 +13,67 @@ class HomeScreen extends StatelessWidget {
         title: const Text('HomeScreen'),
         centerTitle: true,
       ),
-      body: Center(
-        child: CustomButton(
-          color: colors.inversePrimary,
-          text: 'Configuración',
-          icon: Icons.settings,
-          onPressed: () {
-            context.push('/theme');
-          },
-        ),
+      body: _HomeView(colors: colors),
+      drawer: const SideMenu(),
+    );
+  }
+}
+
+//---------------------------------------------------------------
+//-------------------------- _HomeView --------------------------
+//---------------------------------------------------------------
+class _HomeView extends StatelessWidget {
+  const _HomeView({
+    required this.colors,
+  });
+
+  final ColorScheme colors;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CustomButton(
+            color: colors.inversePrimary,
+            text: 'Configuración',
+            icon: Icons.settings,
+            onPressed: () {
+              context.push('/theme');
+            },
+          ),
+          CustomButton(
+            color: colors.inversePrimary,
+            text: 'SnackBar',
+            icon: Icons.messenger_outline_outlined,
+            onPressed: () {
+              final snack = CustomSnackbar(
+                message: 'Esto es un mensaje!!',
+                color: colors.primary,
+              );
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(snack);
+              return;
+            },
+          ),
+          CustomButton(
+            color: colors.inversePrimary,
+            text: 'Cuadro de diálogo',
+            icon: Icons.question_mark,
+            onPressed: () {
+              openDialog(
+                context: context,
+                title: 'Está seguro???',
+                message: 'Lorem Ipsum es simplemente el texto de relleno.',
+                onPressed: () {
+                  Navigator.pop(context);
+                  context.push('/theme');
+                },
+              );
+            },
+          ),
+        ],
       ),
     );
   }
