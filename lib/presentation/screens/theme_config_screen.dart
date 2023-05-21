@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../providers/theme_provider.dart';
 
 class ThemeConfigScreen extends StatelessWidget {
   const ThemeConfigScreen({Key? key}) : super(key: key);
@@ -7,7 +10,7 @@ class ThemeConfigScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ThemeConfigScreen'),
+        title: const Text('Configuración'),
         centerTitle: true,
       ),
       body: const _ThemeConfigView(),
@@ -18,72 +21,80 @@ class ThemeConfigScreen extends StatelessWidget {
 //---------- _ThemeConfigView -----------------------
 //---------------------------------------------------
 
-class _ThemeConfigView extends StatelessWidget {
+class _ThemeConfigView extends ConsumerWidget {
   const _ThemeConfigView();
 
   @override
-  Widget build(BuildContext context) {
-    final List<Color> colors = [
-      Colors.blueAccent,
-      Colors.blue,
-      Colors.lightBlue,
-      Colors.lightBlueAccent,
-      Colors.cyan,
-      Colors.cyanAccent,
-      Colors.blueGrey,
-      Colors.teal,
-      Colors.tealAccent,
-      Colors.red,
-      Colors.redAccent,
-      Colors.pink,
-      Colors.pinkAccent,
-      Colors.deepOrange,
-      Colors.deepOrangeAccent,
-      Colors.orange,
-      Colors.orangeAccent,
-      Colors.yellow,
-      Colors.yellowAccent,
-      Colors.amber,
-      Colors.amberAccent,
-      Colors.lime,
-      Colors.limeAccent,
-      Colors.green,
-      Colors.greenAccent,
-      Colors.lightGreen,
-      Colors.lightGreenAccent,
-      Colors.purple,
-      Colors.purpleAccent,
-      Colors.deepPurple,
-      Colors.deepPurpleAccent,
-      Colors.indigo,
-      Colors.indigoAccent,
-      Colors.brown,
-      Colors.grey,
-      Colors.white,
-      Colors.black12,
-      Colors.black26,
-      Colors.black38,
-      Colors.black45,
-      Colors.black54,
-      Colors.black87,
-    ];
+  Widget build(BuildContext context, WidgetRef ref) {
+    final List<Color> colors = ref.watch(colorListProvider);
+
+    final colorsSelected = Theme.of(context).colorScheme;
+
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: ListView.builder(
-          itemCount: 7,
-          itemBuilder: (context, index) => Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _CustomContainer(colors[index * 6]),
-              _CustomContainer(colors[index * 6 + 1]),
-              _CustomContainer(colors[index * 6 + 2]),
-              _CustomContainer(colors[index * 6 + 3]),
-              _CustomContainer(colors[index * 6 + 4]),
-              _CustomContainer(colors[index * 6 + 5]),
-            ],
+      child: Column(
+        children: [
+          SwitchListTile(
+            title: Row(
+              children: [
+                ref.watch(isDarkmodeProvider.notifier).state
+                    ? Icon(
+                        Icons.dark_mode,
+                        color: colorsSelected.primary,
+                      )
+                    : Icon(
+                        Icons.light_mode,
+                        color: colorsSelected.primary,
+                      ),
+                const SizedBox(
+                  width: 10,
+                ),
+                const Text('Modo oscuro'),
+              ],
+            ),
+            value: ref.read(isDarkmodeProvider.notifier).state,
+            onChanged: (value) {
+              ref.read(isDarkmodeProvider.notifier).update((state) => !state);
+            },
           ),
-        ),
+          Divider(
+            color: colorsSelected.primary,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: SizedBox(
+              height: 50,
+              width: double.infinity,
+              child: Row(children: [
+                const Text('Color seleccionado:'),
+                const Spacer(),
+                _CuadroColor(
+                    size: const Size(300, 300),
+                    selectedColor: ref.watch(selectedColorProvider),
+                    color: ref.watch(
+                        colorListProvider)[ref.watch(selectedColorProvider)])
+              ]),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: ListView.builder(
+                itemCount: 7,
+                itemBuilder: (context, index) => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _CustomContainer(colors[index * 6], index * 6),
+                    _CustomContainer(colors[index * 6 + 1], index * 6 + 1),
+                    _CustomContainer(colors[index * 6 + 2], index * 6 + 2),
+                    _CustomContainer(colors[index * 6 + 3], index * 6 + 3),
+                    _CustomContainer(colors[index * 6 + 4], index * 6 + 4),
+                    _CustomContainer(colors[index * 6 + 5], index * 6 + 5),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -92,34 +103,67 @@ class _ThemeConfigView extends StatelessWidget {
 //---------------------------------------------------
 //---------- _CustomContainer -----------------------
 //---------------------------------------------------
-class _CustomContainer extends StatelessWidget {
+class _CustomContainer extends ConsumerWidget {
   final Color color;
-  const _CustomContainer(this.color);
+  final int selectedColor;
+
+  const _CustomContainer(this.color, this.selectedColor);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        ref.read(selectedColorProvider.notifier).state = selectedColor;
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 3),
-        child: Container(
-          width: size.width * 0.15,
-          height: size.width * 0.15,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(width: 1, color: Colors.black),
-            boxShadow: [
-              BoxShadow(
-                color: color,
-                spreadRadius: 2,
-                blurRadius: 1,
-                offset: const Offset(1, 0), // changes position of shadow
-              ),
-            ],
-          ),
+        child: _CuadroColor(
+          size: size,
+          color: color,
+          selectedColor: selectedColor,
         ),
+      ),
+    );
+  }
+}
+
+//---------------------------------------------------
+//---------------- _CuadroColor ---------------------
+//---------------------------------------------------
+class _CuadroColor extends ConsumerWidget {
+  final Size size;
+  final Color color;
+  final int selectedColor;
+
+  const _CuadroColor({
+    required this.size,
+    required this.color,
+    required this.selectedColor,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+      width: size.width * 0.15,
+      height: size.width * 0.15,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+            width:
+                ref.read(selectedColorProvider.notifier).state == selectedColor
+                    ? 5
+                    : 1,
+            color: Colors.black),
+        boxShadow: [
+          BoxShadow(
+            color: color,
+            spreadRadius: 0,
+            blurRadius: 0,
+            offset: const Offset(0, 0), // changes position of shadow
+          ),
+        ],
       ),
     );
   }

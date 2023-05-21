@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-const Color _customColor = Color(0xff5c11d4);
-
 const List<Color> colorThemes = [
-  _customColor,
   Colors.blueAccent,
   Colors.blue,
   Colors.lightBlue,
@@ -40,12 +37,19 @@ const List<Color> colorThemes = [
   Colors.brown,
   Colors.grey,
   Colors.white,
+  Colors.black12,
+  Colors.black26,
+  Colors.black38,
+  Colors.black45,
+  Colors.black54,
+  Colors.black87,
 ];
 
 class AppTheme {
   final int selectedColor;
+  final bool isDarkmode;
 
-  AppTheme({this.selectedColor = 8})
+  AppTheme({this.selectedColor = 0, this.isDarkmode = false})
       : assert(selectedColor >= 0 && selectedColor <= colorThemes.length - 1,
             'selectedColor debe estar entre 0 y ${colorThemes.length}');
 
@@ -54,10 +58,11 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorSchemeSeed: color,
-      //brightness: Brightness.dark,
-      appBarTheme: const AppBarTheme()
-          .copyWith(centerTitle: true, backgroundColor: color),
-
+      brightness: isDarkmode ? Brightness.dark : Brightness.light,
+      appBarTheme: const AppBarTheme().copyWith(
+          centerTitle: true,
+          backgroundColor: color,
+          foregroundColor: isDarkmode ? Colors.white : Colors.black),
       textTheme: ThemeData.light().textTheme.apply(
             fontFamily: "PTSansNarrow-Regular",
           ),
@@ -66,4 +71,9 @@ class AppTheme {
           ),
     );
   }
+
+  AppTheme copyWith({int? selectedColor, bool? isDarkmode}) => AppTheme(
+        selectedColor: selectedColor ?? this.selectedColor,
+        isDarkmode: isDarkmode ?? this.isDarkmode,
+      );
 }
