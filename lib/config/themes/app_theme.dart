@@ -56,20 +56,21 @@ class AppTheme {
   ThemeData theme() {
     Color color = colorThemes[selectedColor];
     return ThemeData(
-      useMaterial3: true,
-      colorSchemeSeed: color,
-      brightness: isDarkmode ? Brightness.dark : Brightness.light,
-      appBarTheme: const AppBarTheme().copyWith(
-          centerTitle: true,
-          backgroundColor: color,
-          foregroundColor: isDarkmode ? Colors.white : Colors.black),
-      textTheme: ThemeData.light().textTheme.apply(
-            fontFamily: "PTSansNarrow-Regular",
-          ),
-      primaryTextTheme: ThemeData.light().textTheme.apply(
-            fontFamily: "PTSansNarrow-Regular",
-          ),
-    );
+        useMaterial3: true,
+        colorSchemeSeed: color,
+        brightness: isDarkmode ? Brightness.dark : Brightness.light,
+        appBarTheme: const AppBarTheme().copyWith(
+            centerTitle: true,
+            backgroundColor: color,
+            foregroundColor: isDarkmode ? Colors.white : Colors.black),
+        textTheme: ThemeData.light().textTheme.apply(
+              fontFamily: "PTSansNarrow-Regular",
+              bodyColor: isDarkmode ? Colors.white : Colors.black,
+            ),
+        primaryTextTheme: ThemeData.light().textTheme.apply(
+              fontFamily: "PTSansNarrow-Regular",
+              bodyColor: isDarkmode ? Colors.white : Colors.black,
+            ));
   }
 
   AppTheme copyWith({int? selectedColor, bool? isDarkmode}) => AppTheme(
