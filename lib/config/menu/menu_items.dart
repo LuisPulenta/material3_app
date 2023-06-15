@@ -15,9 +15,9 @@ class MenuItem {
 
 const List<MenuItem> appMenuItems = <MenuItem>[
   MenuItem(
-      title: 'Pantalla 1',
-      subtitle: 'Subtìtulo de la Pantalla 1',
-      link: '/pantalla1',
+      title: 'Login',
+      subtitle: 'Ingreso al Sistema',
+      link: '/login',
       icon: Icons.add),
   MenuItem(
       title: 'Pantalla 2',

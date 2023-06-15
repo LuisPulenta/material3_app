@@ -5,13 +5,17 @@ class CustomButton extends StatelessWidget {
   final Color color;
   final IconData icon;
   final VoidCallback onPressed;
+  final double width;
+  final double height;
 
   const CustomButton(
       {Key? key,
       required this.text,
       required this.color,
       required this.icon,
-      required this.onPressed})
+      required this.onPressed,
+      this.width = 50,
+      this.height = 40})
       : super(key: key);
 
   @override
@@ -22,7 +26,7 @@ class CustomButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
-        minimumSize: const Size(50, 40),
+        minimumSize: Size(width, height),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
         ),

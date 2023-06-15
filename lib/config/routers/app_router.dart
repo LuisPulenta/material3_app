@@ -14,8 +14,8 @@ final appRouter = GoRouter(
       builder: (context, state) => const ThemeConfigScreen(),
     ),
     GoRoute(
-      path: '/pantalla1',
-      builder: (context, state) => const Pantalla1Screen(),
+      path: '/login',
+      builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
       path: '/pantalla2',
