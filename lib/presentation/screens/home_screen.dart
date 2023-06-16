@@ -77,6 +77,14 @@ class _HomeView extends StatelessWidget {
               );
             },
           ),
+          CustomButton(
+            color: colors.inversePrimary,
+            text: 'Login',
+            icon: Icons.login,
+            onPressed: () {
+              context.push('/login');
+            },
+          ),
         ],
       ),
     );
