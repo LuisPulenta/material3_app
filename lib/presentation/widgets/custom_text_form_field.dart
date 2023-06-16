@@ -6,6 +6,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? errorMessage;
   final bool? obscureText;
   final Function(String)? onChanged;
+  final Function()? onChanged2;
   final String? Function(String?)? validator;
   final IconData? prefixIcon;
   final IconData? suffixIcon;
@@ -17,6 +18,7 @@ class CustomTextFormField extends StatelessWidget {
       this.errorMessage,
       this.obscureText = false,
       this.onChanged,
+      this.onChanged2,
       this.validator,
       this.prefixIcon,
       this.suffixIcon});
@@ -52,10 +54,14 @@ class CustomTextFormField extends StatelessWidget {
           prefixIcon,
           color: colors.primary,
         ),
-        suffixIcon: Icon(
-          suffixIcon,
-          color: colors.primary,
+        suffixIcon: IconButton(
+          icon: Icon(
+            suffixIcon,
+            color: colors.primary,
+          ),
+          onPressed: onChanged2,
         ),
+
         // icon: Icon(
         //   Icons.home,
         //   color: colors.primary,

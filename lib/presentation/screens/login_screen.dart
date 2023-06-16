@@ -60,20 +60,16 @@ class _LoginView extends StatelessWidget {
 //----------------------- _LoginForm ----------------------
 //---------------------------------------------------------
 
-class _LoginForm extends StatefulWidget {
+class _LoginForm extends StatelessWidget {
   const _LoginForm();
-
-  @override
-  State<_LoginForm> createState() => _LoginFormState();
-}
-
-class _LoginFormState extends State<_LoginForm> {
-  final GlobalKey<FormState> _formKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final loginCubit = context.watch<LoginCubit>();
+    final email = loginCubit.state.email;
+    final password = loginCubit.state.password;
+    final showPassword = loginCubit.state.showPassword;
 
     return Container(
       decoration: BoxDecoration(
@@ -99,7 +95,6 @@ class _LoginFormState extends State<_LoginForm> {
         elevation: 30,
         color: colors.secondaryContainer,
         child: Form(
-          key: _formKey,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -110,24 +105,10 @@ class _LoginFormState extends State<_LoginForm> {
                 CustomTextFormField(
                   label: 'Correo electrónico',
                   hint: 'Ingrese Correo electrónico...',
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Campo requerido';
-                    }
-                    if (value.trim().isEmpty) return 'Campo requerido';
-                    final emailRegExp = RegExp(
-                      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                    );
-                    if (!emailRegExp.hasMatch(value)) {
-                      return 'No tiene formato de correo';
-                    }
-                    return null;
-                  },
-                  errorMessage: null,
+                  errorMessage: email.errorMessage,
                   prefixIcon: Icons.email,
                   onChanged: (value) {
                     loginCubit.emailChanged(value);
-                    _formKey.currentState!.validate();
                   },
                 ),
                 const SizedBox(
@@ -136,21 +117,17 @@ class _LoginFormState extends State<_LoginForm> {
                 CustomTextFormField(
                   label: 'Contraseña',
                   hint: 'Ingrese Contraseña...',
-                  validator: (value) {
-                    if (value == null || value.isEmpty)
-                      return 'Campo requerido';
-                    if (value.trim().isEmpty) return 'Campo requerido';
-                    if (value.trim().length < 6) return 'Más de 6 letras';
-                    return null;
-                  },
-                  errorMessage: null,
+                  errorMessage: password.errorMessage,
                   prefixIcon: Icons.password,
-                  suffixIcon: Icons.remove_red_eye,
+                  suffixIcon:
+                      showPassword ? Icons.visibility : Icons.visibility_off,
                   onChanged: (value) {
                     loginCubit.passwordChanged(value);
-                    _formKey.currentState!.validate();
                   },
-                  obscureText: true,
+                  obscureText: !showPassword,
+                  onChanged2: () {
+                    loginCubit.toogleShowPassword();
+                  },
                 ),
                 const SizedBox(
                   height: 20,
@@ -162,8 +139,6 @@ class _LoginFormState extends State<_LoginForm> {
                   width: double.infinity,
                   height: 54,
                   onPressed: () {
-                    bool isvalid = _formKey.currentState!.validate();
-                    if (!isvalid) return;
                     loginCubit.onSubmit();
                   },
                 ),

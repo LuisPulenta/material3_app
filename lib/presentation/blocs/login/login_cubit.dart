@@ -8,7 +8,15 @@ class LoginCubit extends Cubit<LoginFormState> {
   LoginCubit() : super(const LoginFormState());
 
   void onSubmit() {
-    print('Cubit Submit: ${state.email} ${state.password}');
+    emit(state.copyWith(
+      formStatus: FormStatus.validating,
+      password: Password.dirty(state.password.value),
+      email: Email.dirty(state.email.value),
+      showPassword: state.showPassword,
+      isValid: Formz.validate([state.email, state.password]),
+    ));
+
+    //print('Cubit Submit2: ${state.email} ${state.password}');
   }
 
   void emailChanged(String value) {
@@ -27,6 +35,15 @@ class LoginCubit extends Cubit<LoginFormState> {
       state.copyWith(
         password: password,
         isValid: Formz.validate([state.email, password]),
+      ),
+    );
+  }
+
+  void toogleShowPassword() {
+    emit(
+      state.copyWith(
+        showPassword: !state.showPassword,
+        isValid: Formz.validate([state.email, state.password]),
       ),
     );
   }
