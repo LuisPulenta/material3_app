@@ -23,9 +23,7 @@ class LoginScreen extends StatelessWidget {
 //------------------------ _LoginView ---------------------------
 //---------------------------------------------------------------
 class _LoginView extends StatelessWidget {
-  const _LoginView({
-    super.key,
-  });
+  const _LoginView();
 
   @override
   Widget build(BuildContext context) {

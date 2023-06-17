@@ -18,8 +18,8 @@ final appRouter = GoRouter(
       builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
-      path: '/pantalla2',
-      builder: (context, state) => const Pantalla2Screen(),
+      path: '/textstyles',
+      builder: (context, state) => const TextstylesScreen(),
     ),
     GoRoute(
       path: '/pantalla3',

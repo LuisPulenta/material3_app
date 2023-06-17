@@ -20,9 +20,9 @@ const List<MenuItem> appMenuItems = <MenuItem>[
       link: '/login',
       icon: Icons.add),
   MenuItem(
-      title: 'Pantalla 2',
-      subtitle: 'Subtìtulo de la Pantalla 2',
-      link: '/pantalla2',
+      title: 'Estilos de Textos',
+      subtitle: 'Estilos de Textos',
+      link: '/textstyles',
       icon: Icons.smart_button_outlined),
   MenuItem(
       title: 'Pantalla 3',
